@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafetería El Rincón</title>
+  <style>
+    * { box-sizing: border-box; font-family: sans-serif; }
+    body { margin: 0; background: #faf8f5; color: #2c2520; padding-bottom: 90px; }
+    header { background: #3e2723; color: #fff; padding: 20px; text-align: center; }
+    header h1 { margin: 0; font-size: 1.5rem; }
+    header p { margin: 5px 0 0; font-size: 0.9rem; color: #d7ccc8; }
+    .tabs { display: flex; justify-content: center; gap: 8px; padding: 12px; background: #fff; position: sticky; top: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.06); }
+    .tab { border: 1px solid #d7ccc8; background: #fff; color: #3e2723; padding: 8px 14px; border-radius: 20px; font-weight: bold; }
+    .tab.active { background: #3e2723; color: #fff; }
+    .container { max-width: 500px; margin: 0 auto; padding: 15px; }
+    .card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .card h3 { margin: 0 0 4px; font-size: 1rem; }
+    .card p { margin: 0 0 6px; font-size: 0.85rem; color: #666; }
+    .price { font-weight: bold; color: #b45309; }
+    .btn-add { background: #b45309; color: #fff; border: none; border-radius: 8px; padding: 10px 14px; font-weight: bold; }
+    .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #3e2723; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .btn-order { background: #25D366; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; }
+    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); align-items: flex-end; }
+    .modal-bg.open { display: flex; }
+    .modal { background: #fff; width: 100%; border-radius: 18px 18px 0 0; padding: 20px; }
+    .modal input, .modal select { width: 100%; padding: 10px; margin: 6px 0 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+    .btn-wa { width: 100%; background: #25D366; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="t-bar"></h1>
+    <p id="s-bar"></p>
+  </header>
+  <div class="tabs">
+    <button class="tab active" onclick="filtrar('todos', this)">Todos</button>
+    <button class="tab" onclick="filtrar('cafes', this)">Cafés</button>
+    <button class="tab" onclick="filtrar('tostadas', this)">Tostadas</button>
+  </div>
+  <div class="container" id="lista"></div>
+  <div class="footer">
+    <div>Total (<span id="cant">0</span>): <strong><span id="tot">0.00</span> €</strong></div>
+    <button class="btn-order" onclick="abrir()">Ver Pedido</button>
+  </div>
+  <div class="modal-bg" id="modal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h3 style="margin:0;">Tu Pedido (<span id="m-tot">0.00</span> €)</h3>
+        <button onclick="cerrar()" style="border:none;background:none;font-size:1.3rem;">✕</button>
+      </div>
+      <div id="resumen" style="margin:10px 0;font-size:0.9rem;"></div>
+      <select id="tipo"><option value="Mesa">Mesa del local</option><option value="Para llevar">Para llevar</option></select>
+      <input type="text" id="dato" placeholder="Número de mesa o tu nombre">
+      <button class="btn-wa" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
+    </div>
+  </div>
+  <script>
+    const BAR = {
+      nombre: "☕ Cafetería El Rincón",
+      info: "Calle Mayor 12 • Abierto 7:30 - 21:00",
+      whatsapp: "34600000000"
+    };
+    const menu = [
+      { cat: 'cafes', nombre: 'Café con Leche', desc: 'Tueste natural', precio: 1.50 },
+      { cat: 'cafes', nombre: 'Cappuccino', desc: 'Con crema y cacao', precio: 2.20 },
+      { cat: 'tostadas', nombre: 'Tostada Jamón y Tomate', desc: 'Pan de pueblo', precio: 3.50 },
+      { cat: 'tostadas', nombre: 'Tostada Aguacate', desc: 'Pan integral con aguacate', precio: 4.50 }
+    ];
+    document.getElementById('t-bar').innerText = BAR.nombre;
+    document.getElementById('s-bar').innerText = BAR.info;
+    let carrito = [];
+    function render(f = 'todos') {
+      document.getElementById('lista').innerHTML = menu.filter(p => f === 'todos' || p.cat === f).map((p, i) => `
+        <div class="card">
+          <div><h3>${p.nombre}</h3><p>${p.desc}</p><div class="price">${p.precio.toFixed(2)} €</div></div>
+          <button class="btn-add" onclick="add('${p.nombre}', ${p.precio})">+ Añadir</button>
+        </div>`).join('');
+    }
+    function filtrar(c, b) { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); b.classList.add('active'); render(c); }
+    function add(nombre, precio) { carrito.push({ nombre, precio }); document.getElementById('cant').innerText = carrito.length; document.getElementById('tot').innerText = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2); }
+    function abrir() {
+      if (!carrito.length) return alert('Añade algún producto');
+      document.getElementById('resumen').innerHTML = carrito.map((x, i) => `<div>• ${x.nombre} (${x.precio.toFixed(2)} €) <a href="#" onclick="del(${i});return false;" style="color:red;">[Quitar]</a></div>`).join('');
+      document.getElementById('m-tot').innerText = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2);
+      document.getElementById('modal').classList.add('open');
+    }
+    function del(i) { carrito.splice(i, 1); document.getElementById('cant').innerText = carrito.length; document.getElementById('tot').innerText = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2); carrito.length ? abrir() : cerrar(); }
+    function cerrar() { document.getElementById('modal').classList.remove('open'); }
+    function enviarWA() {
+      const msg = `*PEDIDO ${BAR.nombre}*\n${document.getElementById('tipo').value}: ${document.getElementById('dato').value || 'Sin indicar'}\n\n` + carrito.map(x => `• ${x.nombre} (${x.precio.toFixed(2)} €)`).join('\n') + `\n\n*TOTAL: ${document.getElementById('m-tot').innerText} €*`;
+      window.open(`https://wa.me{BAR.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+    render();
+  </script>
+</body>
+</html>
