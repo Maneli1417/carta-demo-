@@ -11,21 +11,24 @@
     header h1 { margin: 0; font-size: 1.5rem; }
     header p { margin: 5px 0 0; font-size: 0.9rem; color: #d7ccc8; }
     .tabs { display: flex; justify-content: center; gap: 8px; padding: 12px; background: #fff; position: sticky; top: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.06); }
-    .tab { border: 1px solid #d7ccc8; background: #fff; color: #3e2723; padding: 8px 14px; border-radius: 20px; font-weight: bold; }
+    .tab { border: 1px solid #d7ccc8; background: #fff; color: #3e2723; padding: 8px 14px; border-radius: 20px; font-weight: bold; cursor: pointer; }
     .tab.active { background: #3e2723; color: #fff; }
     .container { max-width: 500px; margin: 0 auto; padding: 15px; }
     .card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
     .card h3 { margin: 0 0 4px; font-size: 1rem; }
     .card p { margin: 0 0 6px; font-size: 0.85rem; color: #666; }
     .price { font-weight: bold; color: #b45309; }
-    .btn-add { background: #b45309; color: #fff; border: none; border-radius: 8px; padding: 10px 14px; font-weight: bold; }
+    .btn-add { background: #b45309; color: #fff; border: none; border-radius: 8px; padding: 10px 14px; font-weight: bold; cursor: pointer; }
     .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #3e2723; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .btn-order { background: #25D366; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; }
-    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); align-items: flex-end; }
+    .btn-order { background: #25D366; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); align-items: flex-end; z-index: 50; }
     .modal-bg.open { display: flex; }
-    .modal { background: #fff; width: 100%; border-radius: 18px 18px 0 0; padding: 20px; }
+    .modal { background: #fff; width: 100%; max-width: 500px; margin: 0 auto; border-radius: 18px 18px 0 0; padding: 20px; max-height: 85vh; overflow-y: auto; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
+    .btn-quitar { background: #fee2e2; color: #b91c1c; border: none; border-radius: 6px; padding: 6px 10px; font-weight: bold; cursor: pointer; margin-left: 8px; }
     .modal input, .modal select { width: 100%; padding: 10px; margin: 6px 0 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
-    .btn-wa { width: 100%; background: #25D366; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: bold; }
+    .btn-wa { width: 100%; background: #25D366; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+    .btn-vaciar { width: 100%; background: #f3f4f6; color: #b91c1c; border: 1px solid #fca5a5; padding: 10px; border-radius: 10px; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -45,14 +48,15 @@
   </div>
   <div class="modal-bg" id="modal">
     <div class="modal">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <h3 style="margin:0;">Tu Pedido (<span id="m-tot">0.00</span> €)</h3>
-        <button onclick="cerrar()" style="border:none;background:none;font-size:1.3rem;">✕</button>
+        <button type="button" onclick="cerrar()" style="border:none;background:none;font-size:1.4rem;cursor:pointer;">✕</button>
       </div>
-      <div id="resumen" style="margin:10px 0;font-size:0.9rem;"></div>
+      <div id="resumen" style="margin:10px 0;font-size:0.95rem;"></div>
       <select id="tipo"><option value="Mesa">Mesa del local</option><option value="Para llevar">Para llevar</option></select>
       <input type="text" id="dato" placeholder="Número de mesa o tu nombre">
-      <button class="btn-wa" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
+      <button type="button" class="btn-wa" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
+      <button type="button" class="btn-vaciar" onclick="vaciar()">🗑️ Vaciar todo el pedido</button>
     </div>
   </div>
   <script>
@@ -71,21 +75,40 @@
     document.getElementById('s-bar').innerText = BAR.info;
     let carrito = [];
     function render(f = 'todos') {
-      document.getElementById('lista').innerHTML = menu.filter(p => f === 'todos' || p.cat === f).map((p, i) => `
+      document.getElementById('lista').innerHTML = menu.filter(p => f === 'todos' || p.cat === f).map(p => `
         <div class="card">
           <div><h3>${p.nombre}</h3><p>${p.desc}</p><div class="price">${p.precio.toFixed(2)} €</div></div>
-          <button class="btn-add" onclick="add('${p.nombre}', ${p.precio})">+ Añadir</button>
+          <button type="button" class="btn-add" onclick="add('${p.nombre}', ${p.precio})">+ Añadir</button>
         </div>`).join('');
     }
     function filtrar(c, b) { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); b.classList.add('active'); render(c); }
-    function add(nombre, precio) { carrito.push({ nombre, precio }); document.getElementById('cant').innerText = carrito.length; document.getElementById('tot').innerText = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2); }
+    function actualizarTotales() {
+      const total = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2);
+      document.getElementById('cant').innerText = carrito.length;
+      document.getElementById('tot').innerText = total;
+      document.getElementById('m-tot').innerText = total;
+    }
+    function add(nombre, precio) { carrito.push({ nombre, precio }); actualizarTotales(); }
     function abrir() {
       if (!carrito.length) return alert('Añade algún producto');
-      document.getElementById('resumen').innerHTML = carrito.map((x, i) => `<div>• ${x.nombre} (${x.precio.toFixed(2)} €) <a href="#" onclick="del(${i});return false;" style="color:red;">[Quitar]</a></div>`).join('');
-      document.getElementById('m-tot').innerText = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2);
+      document.getElementById('resumen').innerHTML = carrito.map((x, i) => `
+        <div class="item-row">
+          <span>• ${x.nombre}</span>
+          <span><strong>${x.precio.toFixed(2)} €</strong> <button type="button" class="btn-quitar" onclick="del(${i})">✕</button></span>
+        </div>`).join('');
+      actualizarTotales();
       document.getElementById('modal').classList.add('open');
     }
-    function del(i) { carrito.splice(i, 1); document.getElementById('cant').innerText = carrito.length; document.getElementById('tot').innerText = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2); carrito.length ? abrir() : cerrar(); }
+    function del(i) {
+      carrito.splice(i, 1);
+      actualizarTotales();
+      carrito.length ? abrir() : cerrar();
+    }
+    function vaciar() {
+      carrito = [];
+      actualizarTotales();
+      cerrar();
+    }
     function cerrar() { document.getElementById('modal').classList.remove('open'); }
     function enviarWA() {
       const msg = `*PEDIDO ${BAR.nombre}*\n${document.getElementById('tipo').value}: ${document.getElementById('dato').value || 'Sin indicar'}\n\n` + carrito.map(x => `• ${x.nombre} (${x.precio.toFixed(2)} €)`).join('\n') + `\n\n*TOTAL: ${document.getElementById('m-tot').innerText} €*`;
