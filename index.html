@@ -2,19 +2,23 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>EL GRAN COMBO</title>
+<title>EL GRAN COMBO - Carta Digital</title>
 <style>
-*{box-sizing:border-box;font-family:sans-serif}html{scroll-behavior:smooth}body{margin:0;background:#faf8f5;color:#2c2520;padding-bottom:90px}header{background:#3e2723;color:#fff;padding:18px 14px;text-align:center}header h1{margin:0;font-size:1.5rem}header p{margin:6px 0 0;font-size:.85rem;color:#d7ccc8}.tabs{display:flex;gap:8px;padding:12px;background:#fff;position:sticky;top:0;overflow-x:auto;white-space:nowrap;box-shadow:0 2px 5px rgba(0,0,0,.06);z-index:10;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:1px solid #d7ccc8;background:#fff;color:#3e2723;padding:8px 16px;border-radius:20px;font-weight:bold;cursor:pointer;flex-shrink:0}.tab.active{background:#3e2723;color:#fff}.container{max-width:500px;margin:0 auto;padding:15px}.cat-title{margin:18px 0 10px;font-size:1.15rem;color:#3e2723;border-bottom:2px solid #e7e5e4;padding-bottom:4px}.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:0 2px 4px rgba(0,0,0,.05)}.card h3{margin:0 0 4px;font-size:1rem}.card p{margin:0 0 6px;font-size:.85rem;color:#666}.price{font-weight:bold;color:#b45309}.btn-add{background:#b45309;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-weight:bold;cursor:pointer}.qty-box{display:flex;align-items:center;gap:8px;background:#fef3c7;padding:4px 8px;border-radius:8px;border:1px solid #f59e0b}.btn-qty{background:#b45309;color:#fff;border:none;width:28px;height:28px;border-radius:6px;font-weight:bold;font-size:1.1rem;cursor:pointer}.qty-num{font-weight:bold;min-width:18px;text-align:center}.footer{position:fixed;bottom:0;left:0;right:0;background:#3e2723;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:20}.btn-order{background:#25D366;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer}.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:flex-end;z-index:50}.modal-bg.open{display:flex}.modal{background:#fff;width:100%;max-width:500px;margin:0 auto;border-radius:18px 18px 0 0;padding:20px;max-height:85vh;overflow-y:auto}.item-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.modal label{display:block;font-size:.85rem;font-weight:bold;color:#444;margin-top:8px}.modal input,.modal select{width:100%;padding:10px;margin:4px 0 8px;border:1px solid #ccc;border-radius:8px;font-size:1rem}.btn-wa{width:100%;background:#25D366;color:#fff;border:none;padding:14px;border-radius:10px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:6px}.btn-vaciar{width:100%;background:#f3f4f6;color:#b91c1c;border:1px solid #fca5a5;padding:10px;border-radius:10px;font-size:.9rem;font-weight:bold;cursor:pointer;margin-top:8px}
+*{box-sizing:border-box;font-family:sans-serif}html{scroll-behavior:smooth}body{margin:0;background:#faf8f5;color:#2c2520;padding-bottom:90px}header{background:#3e2723;color:#fff;padding:18px 14px;text-align:center}header h1{margin:0;font-size:1.5rem}header p{margin:6px 0 0;font-size:.85rem;color:#d7ccc8}.notice{background:#fef3c7;color:#92400e;font-size:.82rem;text-align:center;padding:8px 12px;border-bottom:1px solid #fde68a}.tabs{display:flex;gap:8px;padding:12px;background:#fff;position:sticky;top:0;overflow-x:auto;white-space:nowrap;box-shadow:0 2px 5px rgba(0,0,0,.06);z-index:10;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:1px solid #d7ccc8;background:#fff;color:#3e2723;padding:8px 14px;border-radius:20px;font-weight:bold;cursor:pointer;flex-shrink:0;font-size:.9rem}.tab.active{background:#3e2723;color:#fff}.container{max-width:500px;margin:0 auto;padding:15px}.cat-title{margin:18px 0 10px;font-size:1.15rem;color:#3e2723;border-bottom:2px solid #e7e5e4;padding-bottom:4px}.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:0 2px 4px rgba(0,0,0,.05)}.card h3{margin:0 0 4px;font-size:1rem}.card p{margin:0 0 6px;font-size:.82rem;color:#666}.price{font-weight:bold;color:#b45309}.btn-add{background:#b45309;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-weight:bold;cursor:pointer;flex-shrink:0}.qty-box{display:flex;align-items:center;gap:8px;background:#fef3c7;padding:4px 8px;border-radius:8px;border:1px solid #f59e0b;flex-shrink:0}.btn-qty{background:#b45309;color:#fff;border:none;width:28px;height:28px;border-radius:6px;font-weight:bold;font-size:1.1rem;cursor:pointer}.qty-num{font-weight:bold;min-width:18px;text-align:center}.footer{position:fixed;bottom:0;left:0;right:0;background:#3e2723;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:20}.btn-order{background:#25D366;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer}.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:flex-end;z-index:50}.modal-bg.open{display:flex}.modal{background:#fff;width:100%;max-width:500px;margin:0 auto;border-radius:18px 18px 0 0;padding:20px;max-height:85vh;overflow-y:auto}.item-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.modal label{display:block;font-size:.85rem;font-weight:bold;color:#444;margin-top:8px}.modal input,.modal select{width:100%;padding:10px;margin:4px 0 8px;border:1px solid #ccc;border-radius:8px;font-size:1rem}.btn-wa{width:100%;background:#25D366;color:#fff;border:none;padding:14px;border-radius:10px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:6px}.btn-vaciar{width:100%;background:#f3f4f6;color:#b91c1c;border:1px solid #fca5a5;padding:10px;border-radius:10px;font-size:.9rem;font-weight:bold;cursor:pointer;margin-top:8px}
 </style>
 </head>
 <body>
 <header><h1 id="t-bar"></h1><p id="s-bar"></p></header>
+<div class="notice">📋 Tapas del día, refrescos adicionales y menú diario disponibles en pizarra del local.</div>
 <nav class="tabs">
 <button type="button" class="tab active" onclick="filtrar('todos',this)">Todos</button>
-<button type="button" class="tab" onclick="filtrar('tapas',this)">Tapas</button>
+<button type="button" class="tab" onclick="filtrar('tostadas',this)">Tostadas</button>
+<button type="button" class="tab" onclick="filtrar('cafes',this)">Cafés</button>
+<button type="button" class="tab" onclick="filtrar('bocadillos',this)">Bocadillos</button>
 <button type="button" class="tab" onclick="filtrar('raciones',this)">Raciones</button>
-<button type="button" class="tab" onclick="filtrar('postres',this)">Postres</button>
-<button type="button" class="tab" onclick="filtrar('bebidas',this)">Bebidas</button>
+<button type="button" class="tab" onclick="filtrar('cervezas',this)">Cervezas</button>
+<button type="button" class="tab" onclick="filtrar('vinos',this)">Vinos</button>
+<button type="button" class="tab" onclick="filtrar('tragos',this)">Cubatas y Tragos</button>
 </nav>
 <div class="container" id="lista"></div>
 <div class="footer"><div>Total (<span id="cant">0</span>): <strong><span id="tot">0.00</span> €</strong></div><button type="button" class="btn-order" onclick="abrir()">Ver Pedido</button></div>
@@ -23,38 +27,59 @@
 <div id="resumen" style="margin:10px 0;font-size:.95rem"></div>
 <label>Tipo de servicio:</label><select id="tipo"><option value="Mesa">Mesa del local</option><option value="Para llevar">Para llevar</option></select>
 <label>Mesa o nombre:</label><input type="text" id="dato" placeholder="Ej. Mesa 4 o tu nombre">
-<label>Notas para cocina / barra (opcional):</label><input type="text" id="notas" placeholder="Ej. Sin cebolla, muy hecho, hielo aparte...">
+<label>Notas para cocina / barra (opcional):</label><input type="text" id="notas" placeholder="Ej. Pan muy tostado, hielo aparte...">
 <button type="button" class="btn-wa" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
 <button type="button" class="btn-vaciar" onclick="vaciar()">🗑️ Vaciar todo el pedido</button>
 </div></div>
 <script>
 const BAR={nombre:"EL GRAN COMBO",info:"C/ La Maya nº 9 (Pardaleras), Badajoz • L-S: 08:00-16:00 y 18:00-00:00",whatsapp:"34614332550"};
-const categorias=[{id:'tapas',titulo:'Tapas'},{id:'raciones',titulo:'Raciones'},{id:'postres',titulo:'Postres'},{id:'bebidas',titulo:'Bebidas'}];
+const categorias=[
+{id:'tostadas',titulo:'Tostadas'},{id:'cafes',titulo:'Cafés'},{id:'bocadillos',titulo:'Bocadillos'},
+{id:'raciones',titulo:'Raciones'},{id:'cervezas',titulo:'Cervezas'},{id:'vinos',titulo:'Vinos (Copa / Botella)'},
+{id:'tragos',titulo:'Cubatas y Tragos'}
+];
 const menu=[
-{id:1,cat:'tapas',nombre:'Tapa Ensaladilla Rusa',desc:'Casera con ventresca y picos',precio:3.00},
-{id:2,cat:'tapas',nombre:'Montadito de Lomo',desc:'Con queso fundido y alioli',precio:3.50},
-{id:3,cat:'raciones',nombre:'Patatas Bravas',desc:'Con salsa brava casera y alioli',precio:7.50},
-{id:4,cat:'raciones',nombre:'Croquetas de Jamón (8 uds)',desc:'Cremosas de jamón ibérico',precio:9.00},
-{id:5,cat:'postres',nombre:'Tarta de Queso',desc:'Casera al horno con mermelada',precio:4.50},
-{id:6,cat:'postres',nombre:'Flan de Huevo',desc:'Con nata montada',precio:3.50},
-{id:7,cat:'bebidas',nombre:'Caña de Cerveza',desc:'Bien fría de barril',precio:1.60},
-{id:8,cat:'bebidas',nombre:'Tubo de Cerveza',desc:'Vaso largo bien frío',precio:2.20},
-{id:9,cat:'bebidas',nombre:'Refresco',desc:'Lata o botella 33 cl',precio:2.40},
-{id:10,cat:'bebidas',nombre:'Agua Mineral',desc:'Botella 50 cl',precio:1.50}
+{id:1,cat:'tostadas',nombre:'Tostada Salmorejo (Media)',desc:'Tamaño media tostada',precio:1.40},
+{id:2,cat:'tostadas',nombre:'Tostada Salmorejo (Entera)',desc:'Tamaño tostada entera',precio:2.30},
+{id:3,cat:'tostadas',nombre:'Tostada York y Queso (Media)',desc:'Tamaño media tostada',precio:2.10},
+{id:4,cat:'tostadas',nombre:'Tostada York y Queso (Entera)',desc:'Tamaño tostada entera',precio:3.90},
+{id:5,cat:'tostadas',nombre:'Tostada York y Queso Curado (Media)',desc:'Tamaño media tostada',precio:2.30},
+{id:6,cat:'tostadas',nombre:'Tostada York y Queso Curado (Entera)',desc:'Tamaño tostada entera',precio:4.10},
+{id:7,cat:'tostadas',nombre:'Tostada Aguacate y Huevo (Media)',desc:'Tamaño media tostada',precio:2.50},
+{id:8,cat:'tostadas',nombre:'Tostada Aguacate y Huevo (Entera)',desc:'Tamaño tostada entera',precio:4.50},
+{id:9,cat:'tostadas',nombre:'Tostada Lacón (Media)',desc:'Tamaño media tostada',precio:3.00},
+{id:10,cat:'tostadas',nombre:'Tostada Lacón (Entera)',desc:'Tamaño tostada entera',precio:5.20},
+{id:11,cat:'cafes',nombre:'Bica',desc:'Café solo estilo portugués',precio:1.20},
+{id:12,cat:'cafes',nombre:'Descafeinado de máquina con leche',desc:'Taza caliente',precio:1.50},
+{id:13,cat:'cafes',nombre:'Café Doble',desc:'Carga doble',precio:2.00},
+{id:14,cat:'bocadillos',nombre:'Bocadillo Bacon y Queso',desc:'Recién hecho',precio:5.00},
+{id:15,cat:'bocadillos',nombre:'Bocadillo Queso Curado',desc:'Pan crujiente',precio:6.00},
+{id:16,cat:'bocadillos',nombre:'Bocadillo Chorizo Ibérico',desc:'Ibérico de bellota',precio:6.00},
+{id:17,cat:'bocadillos',nombre:'Bocadillo Calamares',desc:'Calamares fritos',precio:7.00},
+{id:18,cat:'bocadillos',nombre:'Bocadillo Jamón Ibérico',desc:'Jamón ibérico al corte',precio:10.00},
+{id:19,cat:'raciones',nombre:'Ensalada',desc:'Ración completa',precio:10.00},
+{id:20,cat:'raciones',nombre:'Cazón',desc:'Ración en adobo',precio:11.00},
+{id:21,cat:'cervezas',nombre:'Quinto Amstel',desc:'Botellín 20 cl bien frío',precio:1.50},
+{id:22,cat:'cervezas',nombre:'Quinto Cruzcampo',desc:'Botellín 20 cl bien frío',precio:1.50},
+{id:23,cat:'cervezas',nombre:'Ladrón de Verano',desc:'Sidra refrescante',precio:2.50},
+{id:24,cat:'cervezas',nombre:'Cubeta Sagres',desc:'Cubo con hielo',precio:10.00},
+{id:25,cat:'cervezas',nombre:'Cubeta Amstel',desc:'Cubo con hielo',precio:12.00},
+{id:26,cat:'vinos',nombre:'Barbadillo (Copa)',desc:'Vino blanco',precio:3.00},
+{id:27,cat:'vinos',nombre:'Barbadillo (Botella)',desc:'Botella 75 cl',precio:15.00},
+{id:28,cat:'vinos',nombre:'Beronia (Copa)',desc:'Rioja',precio:3.00},
+{id:29,cat:'vinos',nombre:'Beronia (Botella)',desc:'Botella 75 cl',precio:15.00},
+{id:30,cat:'vinos',nombre:'Palacio Quemado (Copa)',desc:'Tinto de la tierra',precio:3.00},
+{id:31,cat:'vinos',nombre:'Palacio Quemado (Botella)',desc:'Botella 75 cl',precio:15.00},
+{id:32,cat:'vinos',nombre:'Lambrusco (Copa)',desc:'Vino de aguja',precio:3.50},
+{id:33,cat:'vinos',nombre:'Lambrusco (Botella)',desc:'Botella 75 cl',precio:16.00},
+{id:34,cat:'vinos',nombre:'Mía (Copa)',desc:'Vino afrutado',precio:3.50},
+{id:35,cat:'vinos',nombre:'Mía (Botella)',desc:'Botella 75 cl',precio:16.00},
+{id:36,cat:'tragos',nombre:'Punt e Mes / Puntemiño (Chupito)',desc:'Aperitivo vermú',precio:1.50},
+{id:37,cat:'tragos',nombre:'Punt e Mes / Puntemiño (Copa)',desc:'Copa servida',precio:4.50},
+{id:38,cat:'tragos',nombre:'Baileys (Chupito)',desc:'Crema irlandesa',precio:2.00},
+{id:39,cat:'tragos',nombre:'Baileys (Copa)',desc:'Con hielo',precio:4.00},
+{id:40,cat:'tragos',nombre:'Amarguinha (Chupito)',desc:'Licor de almendra amarga',precio:3.50},
+{id:41,cat:'tragos',nombre:'Amarguinha (Copa)',desc:'Con hielo y limón',precio:5.00}
 ];
 document.getElementById('t-bar').innerText=BAR.nombre;document.getElementById('s-bar').innerText=BAR.info;
 let filtroActual='todos',cantidades={};
-function tarjetaHTML(p){const q=cantidades[p.id]||0;const c=q===0?`<button type="button" class="btn-add" onclick="cambiar(${p.id},1)">+ Añadir</button>`:`<div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar(${p.id},-1)">-</button><span class="qty-num">${q}</span><button type="button" class="btn-qty" onclick="cambiar(${p.id},1)">+</button></div>`;return `<div class="card"><div><h3>${p.nombre}</h3><p>${p.desc}</p><div class="price">${p.precio.toFixed(2)} €</div></div>${c}</div>`}
-function render(){const cont=document.getElementById('lista');cont.innerHTML=filtroActual==='todos'?categorias.map(c=>{const items=menu.filter(p=>p.cat===c.id);return items.length?`<h2 class="cat-title">${c.titulo}</h2>`+items.map(tarjetaHTML).join(''):''}).join(''):menu.filter(p=>p.cat===filtroActual).map(tarjetaHTML).join('')}
-function filtrar(c,b){filtroActual=c;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');b.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});render();window.scrollTo({top:document.querySelector('header').offsetHeight,behavior:'smooth'})}
-function cambiar(id,d){cantidades[id]=Math.max(0,(cantidades[id]||0)+d);if(cantidades[id]===0)delete cantidades[id];actualizarTotales();render();if(document.getElementById('modal').classList.contains('open'))abrir()}
-function obtenerSeleccion(){return menu.filter(p=>cantidades[p.id]>0).map(p=>({...p,qty:cantidades[p.id]}))}
-function actualizarTotales(){const items=obtenerSeleccion();document.getElementById('cant').innerText=items.reduce((a,b)=>a+b.qty,0);const total=items.reduce((a,b)=>a+b.precio*b.qty,0).toFixed(2);document.getElementById('tot').innerText=total;document.getElementById('m-tot').innerText=total}
-function abrir(){const items=obtenerSeleccion();if(!items.length){cerrar();return}document.getElementById('resumen').innerHTML=items.map(x=>`<div class="item-row"><div><strong>${x.qty}x</strong> ${x.nombre}<br><small style="color:#666">${(x.precio*x.qty).toFixed(2)} €</small></div><div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar(${x.id},-1)">-</button><span class="qty-num">${x.qty}</span><button type="button" class="btn-qty" onclick="cambiar(${x.id},1)">+</button></div></div>`).join('');actualizarTotales();document.getElementById('modal').classList.add('open')}
-function vaciar(){cantidades={};actualizarTotales();render();cerrar()}
-function cerrar(){document.getElementById('modal').classList.remove('open')}
-function enviarWA(){const items=obtenerSeleccion();if(!items.length)return;const notas=document.getElementById('notas').value.trim();let msg=`*PEDIDO ${BAR.nombre}*\n${document.getElementById('tipo').value}: ${document.getElementById('dato').value||'Sin indicar'}\n\n`+items.map(x=>`• ${x.qty}x ${x.nombre} (${(x.precio*x.qty).toFixed(2)} €)`).join('\n')+`\n\n*TOTAL: ${document.getElementById('m-tot').innerText} €*`;if(notas)msg+=`\n📝 *Notas:* ${notas}`;window.open(`https://wa.me{BAR.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank')}
-render();
-</script>
-</body>
-</html>
