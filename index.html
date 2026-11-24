@@ -1,159 +1,58 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EL GRAN COMBO - Carta Digital</title>
-  <style>
-    * { box-sizing: border-box; font-family: sans-serif; }
-    body { margin: 0; background: #faf8f5; color: #2c2520; padding-bottom: 90px; }
-    header { background: #3e2723; color: #fff; padding: 20px 14px; text-align: center; }
-    header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 0.5px; }
-    header p { margin: 6px 0 0; font-size: 0.85rem; color: #d7ccc8; line-height: 1.4; }
-    .tabs { display: flex; justify-content: center; gap: 8px; padding: 12px; background: #fff; position: sticky; top: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.06); z-index: 10; }
-    .tab { border: 1px solid #d7ccc8; background: #fff; color: #3e2723; padding: 8px 14px; border-radius: 20px; font-weight: bold; cursor: pointer; }
-    .tab.active { background: #3e2723; color: #fff; }
-    .container { max-width: 500px; margin: 0 auto; padding: 15px; }
-    .card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .card h3 { margin: 0 0 4px; font-size: 1rem; }
-    .card p { margin: 0 0 6px; font-size: 0.85rem; color: #666; }
-    .price { font-weight: bold; color: #b45309; }
-    .btn-add { background: #b45309; color: #fff; border: none; border-radius: 8px; padding: 10px 14px; font-weight: bold; cursor: pointer; white-space: nowrap; }
-    .qty-box { display: flex; align-items: center; gap: 8px; background: #fef3c7; padding: 4px 8px; border-radius: 8px; border: 1px solid #f59e0b; }
-    .btn-qty { background: #b45309; color: #fff; border: none; width: 28px; height: 28px; border-radius: 6px; font-weight: bold; font-size: 1.1rem; cursor: pointer; line-height: 1; }
-    .qty-num { font-weight: bold; min-width: 18px; text-align: center; }
-    .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #3e2723; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 20; }
-    .btn-order { background: #25D366; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); align-items: flex-end; z-index: 50; }
-    .modal-bg.open { display: flex; }
-    .modal { background: #fff; width: 100%; max-width: 500px; margin: 0 auto; border-radius: 18px 18px 0 0; padding: 20px; max-height: 85vh; overflow-y: auto; }
-    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
-    .modal label { display: block; font-size: 0.85rem; font-weight: bold; color: #444; margin-top: 8px; }
-    .modal input, .modal select { width: 100%; padding: 10px; margin: 4px 0 8px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
-    .btn-wa { width: 100%; background: #25D366; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 6px; }
-    .btn-vaciar { width: 100%; background: #f3f4f6; color: #b91c1c; border: 1px solid #fca5a5; padding: 10px; border-radius: 10px; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-top: 8px; }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EL GRAN COMBO</title>
+<style>
+*{box-sizing:border-box;font-family:sans-serif}html{scroll-behavior:smooth}body{margin:0;background:#faf8f5;color:#2c2520;padding-bottom:90px}header{background:#3e2723;color:#fff;padding:18px 14px;text-align:center}header h1{margin:0;font-size:1.5rem}header p{margin:6px 0 0;font-size:.85rem;color:#d7ccc8}.tabs{display:flex;gap:8px;padding:12px;background:#fff;position:sticky;top:0;overflow-x:auto;white-space:nowrap;box-shadow:0 2px 5px rgba(0,0,0,.06);z-index:10;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:1px solid #d7ccc8;background:#fff;color:#3e2723;padding:8px 16px;border-radius:20px;font-weight:bold;cursor:pointer;flex-shrink:0}.tab.active{background:#3e2723;color:#fff}.container{max-width:500px;margin:0 auto;padding:15px}.cat-title{margin:18px 0 10px;font-size:1.15rem;color:#3e2723;border-bottom:2px solid #e7e5e4;padding-bottom:4px}.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:0 2px 4px rgba(0,0,0,.05)}.card h3{margin:0 0 4px;font-size:1rem}.card p{margin:0 0 6px;font-size:.85rem;color:#666}.price{font-weight:bold;color:#b45309}.btn-add{background:#b45309;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-weight:bold;cursor:pointer}.qty-box{display:flex;align-items:center;gap:8px;background:#fef3c7;padding:4px 8px;border-radius:8px;border:1px solid #f59e0b}.btn-qty{background:#b45309;color:#fff;border:none;width:28px;height:28px;border-radius:6px;font-weight:bold;font-size:1.1rem;cursor:pointer}.qty-num{font-weight:bold;min-width:18px;text-align:center}.footer{position:fixed;bottom:0;left:0;right:0;background:#3e2723;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:20}.btn-order{background:#25D366;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer}.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:flex-end;z-index:50}.modal-bg.open{display:flex}.modal{background:#fff;width:100%;max-width:500px;margin:0 auto;border-radius:18px 18px 0 0;padding:20px;max-height:85vh;overflow-y:auto}.item-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.modal label{display:block;font-size:.85rem;font-weight:bold;color:#444;margin-top:8px}.modal input,.modal select{width:100%;padding:10px;margin:4px 0 8px;border:1px solid #ccc;border-radius:8px;font-size:1rem}.btn-wa{width:100%;background:#25D366;color:#fff;border:none;padding:14px;border-radius:10px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:6px}.btn-vaciar{width:100%;background:#f3f4f6;color:#b91c1c;border:1px solid #fca5a5;padding:10px;border-radius:10px;font-size:.9rem;font-weight:bold;cursor:pointer;margin-top:8px}
+</style>
 </head>
 <body>
-  <header>
-    <h1 id="t-bar"></h1>
-    <p id="s-bar"></p>
-  </header>
-  <div class="tabs">
-    <button class="tab active" onclick="filtrar('todos', this)">Todos</button>
-    <button class="tab" onclick="filtrar('cafes', this)">Cafés</button>
-    <button class="tab" onclick="filtrar('tostadas', this)">Tostadas</button>
-  </div>
-  <div class="container" id="lista"></div>
-  <div class="footer">
-    <div>Total (<span id="cant">0</span>): <strong><span id="tot">0.00</span> €</strong></div>
-    <button class="btn-order" onclick="abrir()">Ver Pedido</button>
-  </div>
-  <div class="modal-bg" id="modal">
-    <div class="modal">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <h3 style="margin:0;">Tu Pedido (<span id="m-tot">0.00</span> €)</h3>
-        <button type="button" onclick="cerrar()" style="border:none;background:none;font-size:1.4rem;cursor:pointer;">✕</button>
-      </div>
-      <div id="resumen" style="margin:10px 0;font-size:0.95rem;"></div>
-      <label>Tipo de servicio:</label>
-      <select id="tipo"><option value="Mesa">Mesa del local</option><option value="Para llevar">Para llevar</option></select>
-      <label>Mesa o nombre:</label>
-      <input type="text" id="dato" placeholder="Ej. Mesa 4 o tu nombre">
-      <label>Notas para cocina / barra (opcional):</label>
-      <input type="text" id="notas" placeholder="Ej. Sin cebolla, muy hecho, café templado...">
-      <button type="button" class="btn-wa" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
-      <button type="button" class="btn-vaciar" onclick="vaciar()">🗑️ Vaciar todo el pedido</button>
-    </div>
-  </div>
-  <script>
-    const BAR = {
-      nombre: "EL GRAN COMBO",
-      info: "C/ La Maya nº 9 (Pardaleras), Badajoz • L-S: 08:00-16:00 y 18:00-00:00",
-      whatsapp: "34614332550"
-    };
-    const menu = [
-      { id: 1, cat: 'cafes', nombre: 'Café con Leche', desc: 'Tueste natural', precio: 1.50 },
-      { id: 2, cat: 'cafes', nombre: 'Cappuccino', desc: 'Con crema y cacao', precio: 2.20 },
-      { id: 3, cat: 'tostadas', nombre: 'Tostada Jamón y Tomate', desc: 'Pan de pueblo', precio: 3.50 },
-      { id: 4, cat: 'tostadas', nombre: 'Tostada Aguacate', desc: 'Pan integral con aguacate', precio: 4.50 }
-    ];
-    document.getElementById('t-bar').innerText = BAR.nombre;
-    document.getElementById('s-bar').innerText = BAR.info;
-    let filtroActual = 'todos';
-    let cantidades = {};
-
-    function render() {
-      document.getElementById('lista').innerHTML = menu
-        .filter(p => filtroActual === 'todos' || p.cat === filtroActual)
-        .map(p => {
-          const q = cantidades[p.id] || 0;
-          const control = q === 0
-            ? `<button type="button" class="btn-add" onclick="cambiar(${p.id}, 1)">+ Añadir</button>`
-            : `<div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar(${p.id}, -1)">-</button><span class="qty-num">${q}</span><button type="button" class="btn-qty" onclick="cambiar(${p.id}, 1)">+</button></div>`;
-          return `<div class="card"><div><h3>${p.nombre}</h3><p>${p.desc}</p><div class="price">${p.precio.toFixed(2)} €</div></div>${control}</div>`;
-        }).join('');
-    }
-
-    function filtrar(c, b) {
-      filtroActual = c;
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      b.classList.add('active');
-      render();
-    }
-
-    function cambiar(id, delta) {
-      cantidades[id] = Math.max(0, (cantidades[id] || 0) + delta);
-      if (cantidades[id] === 0) delete cantidades[id];
-      actualizarTotales();
-      render();
-      if (document.getElementById('modal').classList.contains('open')) abrir();
-    }
-
-    function obtenerSeleccion() {
-      return menu.filter(p => cantidades[p.id] > 0).map(p => ({ ...p, qty: cantidades[p.id] }));
-    }
-
-    function actualizarTotales() {
-      const items = obtenerSeleccion();
-      const uds = items.reduce((a, b) => a + b.qty, 0);
-      const total = items.reduce((a, b) => a + b.precio * b.qty, 0).toFixed(2);
-      document.getElementById('cant').innerText = uds;
-      document.getElementById('tot').innerText = total;
-      document.getElementById('m-tot').innerText = total;
-    }
-
-    function abrir() {
-      const items = obtenerSeleccion();
-      if (!items.length) { cerrar(); return; }
-      document.getElementById('resumen').innerHTML = items.map(x => `
-        <div class="item-row">
-          <div><strong>${x.qty}x</strong> ${x.nombre}<br><small style="color:#666;">${(x.precio * x.qty).toFixed(2)} €</small></div>
-          <div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar(${x.id}, -1)">-</button><span class="qty-num">${x.qty}</span><button type="button" class="btn-qty" onclick="cambiar(${x.id}, 1)">+</button></div>
-        </div>`).join('');
-      actualizarTotales();
-      document.getElementById('modal').classList.add('open');
-    }
-
-    function vaciar() {
-      cantidades = {};
-      actualizarTotales();
-      render();
-      cerrar();
-    }
-
-    function cerrar() { document.getElementById('modal').classList.remove('open'); }
-
-    function enviarWA() {
-      const items = obtenerSeleccion();
-      if (!items.length) return;
-      const notas = document.getElementById('notas').value.trim();
-      let msg = `*PEDIDO ${BAR.nombre}*\n${document.getElementById('tipo').value}: ${document.getElementById('dato').value || 'Sin indicar'}\n\n` + items.map(x => `• ${x.qty}x ${x.nombre} (${(x.precio * x.qty).toFixed(2)} €)`).join('\n') + `\n\n*TOTAL: ${document.getElementById('m-tot').innerText} €*`;
-      if (notas) msg += `\n📝 *Notas:* ${notas}`;
-      window.open(`https://wa.me{BAR.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    render();
-  </script>
+<header><h1 id="t-bar"></h1><p id="s-bar"></p></header>
+<nav class="tabs">
+<button type="button" class="tab active" onclick="filtrar('todos',this)">Todos</button>
+<button type="button" class="tab" onclick="filtrar('tapas',this)">Tapas</button>
+<button type="button" class="tab" onclick="filtrar('raciones',this)">Raciones</button>
+<button type="button" class="tab" onclick="filtrar('postres',this)">Postres</button>
+<button type="button" class="tab" onclick="filtrar('bebidas',this)">Bebidas</button>
+</nav>
+<div class="container" id="lista"></div>
+<div class="footer"><div>Total (<span id="cant">0</span>): <strong><span id="tot">0.00</span> €</strong></div><button type="button" class="btn-order" onclick="abrir()">Ver Pedido</button></div>
+<div class="modal-bg" id="modal"><div class="modal">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="margin:0">Tu Pedido (<span id="m-tot">0.00</span> €)</h3><button type="button" onclick="cerrar()" style="border:none;background:none;font-size:1.4rem;cursor:pointer">✕</button></div>
+<div id="resumen" style="margin:10px 0;font-size:.95rem"></div>
+<label>Tipo de servicio:</label><select id="tipo"><option value="Mesa">Mesa del local</option><option value="Para llevar">Para llevar</option></select>
+<label>Mesa o nombre:</label><input type="text" id="dato" placeholder="Ej. Mesa 4 o tu nombre">
+<label>Notas para cocina / barra (opcional):</label><input type="text" id="notas" placeholder="Ej. Sin cebolla, muy hecho, hielo aparte...">
+<button type="button" class="btn-wa" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
+<button type="button" class="btn-vaciar" onclick="vaciar()">🗑️ Vaciar todo el pedido</button>
+</div></div>
+<script>
+const BAR={nombre:"EL GRAN COMBO",info:"C/ La Maya nº 9 (Pardaleras), Badajoz • L-S: 08:00-16:00 y 18:00-00:00",whatsapp:"34614332550"};
+const categorias=[{id:'tapas',titulo:'Tapas'},{id:'raciones',titulo:'Raciones'},{id:'postres',titulo:'Postres'},{id:'bebidas',titulo:'Bebidas'}];
+const menu=[
+{id:1,cat:'tapas',nombre:'Tapa Ensaladilla Rusa',desc:'Casera con ventresca y picos',precio:3.00},
+{id:2,cat:'tapas',nombre:'Montadito de Lomo',desc:'Con queso fundido y alioli',precio:3.50},
+{id:3,cat:'raciones',nombre:'Patatas Bravas',desc:'Con salsa brava casera y alioli',precio:7.50},
+{id:4,cat:'raciones',nombre:'Croquetas de Jamón (8 uds)',desc:'Cremosas de jamón ibérico',precio:9.00},
+{id:5,cat:'postres',nombre:'Tarta de Queso',desc:'Casera al horno con mermelada',precio:4.50},
+{id:6,cat:'postres',nombre:'Flan de Huevo',desc:'Con nata montada',precio:3.50},
+{id:7,cat:'bebidas',nombre:'Caña / Tubo Cerveza',desc:'Bien fría',precio:1.80},
+{id:8,cat:'bebidas',nombre:'Refresco / Agua',desc:'33 cl',precio:2.20}
+];
+document.getElementById('t-bar').innerText=BAR.nombre;document.getElementById('s-bar').innerText=BAR.info;
+let filtroActual='todos',cantidades={};
+function tarjetaHTML(p){const q=cantidades[p.id]||0;const c=q===0?`<button type="button" class="btn-add" onclick="cambiar(${p.id},1)">+ Añadir</button>`:`<div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar(${p.id},-1)">-</button><span class="qty-num">${q}</span><button type="button" class="btn-qty" onclick="cambiar(${p.id},1)">+</button></div>`;return `<div class="card"><div><h3>${p.nombre}</h3><p>${p.desc}</p><div class="price">${p.precio.toFixed(2)} €</div></div>${c}</div>`}
+function render(){const cont=document.getElementById('lista');cont.innerHTML=filtroActual==='todos'?categorias.map(c=>{const items=menu.filter(p=>p.cat===c.id);return items.length?`<h2 class="cat-title">${c.titulo}</h2>`+items.map(tarjetaHTML).join(''):''}).join(''):menu.filter(p=>p.cat===filtroActual).map(tarjetaHTML).join('')}
+function filtrar(c,b){filtroActual=c;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');b.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});render();window.scrollTo({top:document.querySelector('header').offsetHeight,behavior:'smooth'})}
+function cambiar(id,d){cantidades[id]=Math.max(0,(cantidades[id]||0)+d);if(cantidades[id]===0)delete cantidades[id];actualizarTotales();render();if(document.getElementById('modal').classList.contains('open'))abrir()}
+function obtenerSeleccion(){return menu.filter(p=>cantidades[p.id]>0).map(p=>({...p,qty:cantidades[p.id]}))}
+function actualizarTotales(){const items=obtenerSeleccion();document.getElementById('cant').innerText=items.reduce((a,b)=>a+b.qty,0);const total=items.reduce((a,b)=>a+b.precio*b.qty,0).toFixed(2);document.getElementById('tot').innerText=total;document.getElementById('m-tot').innerText=total}
+function abrir(){const items=obtenerSeleccion();if(!items.length){cerrar();return}document.getElementById('resumen').innerHTML=items.map(x=>`<div class="item-row"><div><strong>${x.qty}x</strong> ${x.nombre}<br><small style="color:#666">${(x.precio*x.qty).toFixed(2)} €</small></div><div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar(${x.id},-1)">-</button><span class="qty-num">${x.qty}</span><button type="button" class="btn-qty" onclick="cambiar(${x.id},1)">+</button></div></div>`).join('');actualizarTotales();document.getElementById('modal').classList.add('open')}
+function vaciar(){cantidades={};actualizarTotales();render();cerrar()}
+function cerrar(){document.getElementById('modal').classList.remove('open')}
+function enviarWA(){const items=obtenerSeleccion();if(!items.length)return;const notas=document.getElementById('notas').value.trim();let msg=`*PEDIDO ${BAR.nombre}*\n${document.getElementById('tipo').value}: ${document.getElementById('dato').value||'Sin indicar'}\n\n`+items.map(x=>`• ${x.qty}x ${x.nombre} (${(x.precio*x.qty).toFixed(2)} €)`).join('\n')+`\n\n*TOTAL: ${document.getElementById('m-tot').innerText} €*`;if(notas)msg+=`\n📝 *Notas:* ${notas}`;window.open(`https://wa.me{BAR.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank')}
+render();
+</script>
 </body>
 </html>
