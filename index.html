@@ -28,8 +28,9 @@
     .modal-bg.open { display: flex; }
     .modal { background: #fff; width: 100%; max-width: 500px; margin: 0 auto; border-radius: 18px 18px 0 0; padding: 20px; max-height: 85vh; overflow-y: auto; }
     .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
-    .modal input, .modal select { width: 100%; padding: 10px; margin: 6px 0 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
-    .btn-wa { width: 100%; background: #25D366; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+    .modal label { display: block; font-size: 0.85rem; font-weight: bold; color: #444; margin-top: 8px; }
+    .modal input, .modal select { width: 100%; padding: 10px; margin: 4px 0 8px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+    .btn-wa { width: 100%; background: #25D366; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 6px; }
     .btn-vaciar { width: 100%; background: #f3f4f6; color: #b91c1c; border: 1px solid #fca5a5; padding: 10px; border-radius: 10px; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-top: 8px; }
   </style>
 </head>
@@ -55,8 +56,12 @@
         <button type="button" onclick="cerrar()" style="border:none;background:none;font-size:1.4rem;cursor:pointer;">✕</button>
       </div>
       <div id="resumen" style="margin:10px 0;font-size:0.95rem;"></div>
+      <label>Tipo de servicio:</label>
       <select id="tipo"><option value="Mesa">Mesa del local</option><option value="Para llevar">Para llevar</option></select>
-      <input type="text" id="dato" placeholder="Número de mesa o tu nombre">
+      <label>Mesa o nombre:</label>
+      <input type="text" id="dato" placeholder="Ej. Mesa 4 o tu nombre">
+      <label>Notas para cocina / barra (opcional):</label>
+      <input type="text" id="notas" placeholder="Ej. Sin cebolla, muy hecho, café templado...">
       <button type="button" class="btn-wa" onclick="enviarWA()">📲 Enviar por WhatsApp</button>
       <button type="button" class="btn-vaciar" onclick="vaciar()">🗑️ Vaciar todo el pedido</button>
     </div>
@@ -142,7 +147,9 @@
     function enviarWA() {
       const items = obtenerSeleccion();
       if (!items.length) return;
-      const msg = `*PEDIDO ${BAR.nombre}*\n${document.getElementById('tipo').value}: ${document.getElementById('dato').value || 'Sin indicar'}\n\n` + items.map(x => `• ${x.qty}x ${x.nombre} (${(x.precio * x.qty).toFixed(2)} €)`).join('\n') + `\n\n*TOTAL: ${document.getElementById('m-tot').innerText} €*`;
+      const notas = document.getElementById('notas').value.trim();
+      let msg = `*PEDIDO ${BAR.nombre}*\n${document.getElementById('tipo').value}: ${document.getElementById('dato').value || 'Sin indicar'}\n\n` + items.map(x => `• ${x.qty}x ${x.nombre} (${(x.precio * x.qty).toFixed(2)} €)`).join('\n') + `\n\n*TOTAL: ${document.getElementById('m-tot').innerText} €*`;
+      if (notas) msg += `\n📝 *Notas:* ${notas}`;
       window.open(`https://wa.me{BAR.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
