@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>AVISO MESA - EL GRAN COMBO</title><style>
+*{box-sizing:border-box;font-family:sans-serif}body{margin:0;background:#faf8f5;color:#2c2520;padding-bottom:30px}header{background:#3e2723;color:#fff;padding:18px 14px;text-align:center}header h1{margin:0;font-size:1.4rem}header p{margin:6px 0 0;font-size:.85rem;color:#d7ccc8}.container{max-width:480px;margin:0 auto;padding:16px}.step-title{font-size:1rem;font-weight:bold;color:#3e2723;margin:16px 0 10px}.zones{display:grid;grid-template-columns:1fr 1fr;gap:10px}.zone-btn{padding:14px;border:2px solid #d7ccc8;background:#fff;border-radius:12px;font-size:1rem;font-weight:bold;color:#3e2723;cursor:pointer}.zone-btn.active{background:#3e2723;color:#fff;border-color:#3e2723}.tables{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.t-btn{padding:12px 0;border:1px solid #d7ccc8;background:#fff;border-radius:10px;font-weight:bold;font-size:1rem;color:#2c2520;cursor:pointer}.t-btn.active{background:#b45309;color:#fff;border-color:#b45309}.actions{display:flex;flex-direction:column;gap:12px;margin-top:10px}.act-btn{padding:16px;border:none;border-radius:12px;font-size:1.05rem;font-weight:bold;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 3px 6px rgba(0,0,0,.1)}.btn-waiter{background:#b45309}.btn-card{background:#1d4ed8}.btn-cash{background:#15803d}.summary{background:#fef3c7;border:1px solid #f59e0b;color:#92400e;padding:10px;border-radius:10px;text-align:center;font-weight:bold;margin-top:18px;font-size:.95rem}
+</style></head><body>
+<header><h1>EL GRAN COMBO</h1><p>Servicio rápido en mesa • Salón y Terraza</p></header>
+<div class="container">
+<div class="step-title">1. ¿Dónde estás sentado?</div>
+<div class="zones"><button type="button" class="zone-btn active" onclick="selZona('Salón',this)">🏠 Salón</button><button type="button" class="zone-btn" onclick="selZona('Terraza',this)">☀️ Terraza</button></div>
+<div class="step-title">2. Toca tu número de mesa:</div>
+<div class="tables" id="grid-mesas"></div>
+<div class="summary" id="estado">📍 Seleccionado: Salón - Mesa 1</div>
+<div class="step-title">3. ¿Qué necesitas? (Se abrirá WhatsApp)</div>
+<div class="actions">
+<button type="button" class="act-btn btn-waiter" onclick="avisar('🔔 Llamar al camarero')">🔔 Llamar al camarero</button>
+<button type="button" class="act-btn btn-card" onclick="avisar('💳 Pedir la cuenta (con Tarjeta)')">💳 Pedir la cuenta (Tarjeta)</button>
+<button type="button" class="act-btn btn-cash" onclick="avisar('💶 Pedir la cuenta (en Efectivo)')">💶 Pedir la cuenta (Efectivo)</button>
+</div></div>
+<script>
+var WA = "/34614332550";
+var zonaActual = "Salón";
+var mesaActual = 1;
+
+var htmlMesas = "";
+for (var i = 1; i <= 25; i++) {
+  var clase = i === 1 ? "t-btn active" : "t-btn";
+  htmlMesas += '<button type="button" class="' + clase + '" onclick="selMesa(' + i + ',this)">' + i + '</button>';
+}
+document.getElementById("grid-mesas").innerHTML = htmlMesas;
+
+function actualizarTexto() {
+  document.getElementById("estado").innerText = "📍 Seleccionado: " + zonaActual + " - Mesa " + mesaActual;
+}
+
+function selZona(z, btn) {
+  zonaActual = z;
+  var btns = document.querySelectorAll(".zone-btn");
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+  btn.classList.add("active");
+  actualizarTexto();
+}
+
+function selMesa(m, btn) {
+  mesaActual = m;
+  var btns = document.querySelectorAll(".t-btn");
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+  btn.classList.add("active");
+  actualizarTexto();
+}
+
+function avisar(accion) {
+  var msg = "*AVISO DE MESA - EL GRAN COMBO*\n📍 *Zona:* " + zonaActual + "\n🪑 *Mesa:* " + mesaActual + "\n📢 *Solicitud:* " + accion;
+  window.location.href = "https://wa.me" + WA + "?text=" + encodeURIComponent(msg);
+}
+</script></body></html>
