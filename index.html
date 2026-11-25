@@ -7,61 +7,160 @@
 <div class="footer"><div>Total (<span id="cant">0</span>): <strong><span id="tot">0.00</span> €</strong></div><button type="button" class="btn-order" onclick="abrir()">Ver Pedido</button></div>
 <div class="modal-bg" id="modal"><div class="modal"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="margin:0">Tu Pedido (<span id="m-tot">0.00</span> €)</h3><button type="button" onclick="cerrar()" style="border:none;background:none;font-size:1.4rem;cursor:pointer">✕</button></div><div id="resumen" style="margin:10px 0;font-size:.95rem"></div><label>Tipo de servicio:</label><select id="tipo"><option value="Mesa">Mesa del local</option><option value="Para llevar">Para llevar</option></select><label>Mesa o nombre:</label><input type="text" id="dato" placeholder="Ej. Mesa 4 o tu nombre"><label>Notas para cocina / barra (opcional):</label><input type="text" id="notas" placeholder="Ej. Pan muy tostado, hielo aparte..."><button type="button" class="btn-wa" onclick="enviarWA()">📲 Enviar por WhatsApp</button><button type="button" class="btn-vaciar" onclick="vaciar()">🗑️ Vaciar todo el pedido</button></div></div>
 <script>
-const WA="34614332550";
-const cats=[{id:'tostadas',nom:'Tostadas'},{id:'cafes',nom:'Cafés'},{id:'bocadillos',nom:'Bocadillos'},{id:'raciones',nom:'Raciones'},{id:'cervezas',nom:'Cervezas'},{id:'vinos',nom:'Vinos (Copa/Botella)'},{id:'tragos',nom:'Cubatas y Tragos'}];
-const menu=[
-{id:1,cat:'tostadas',nombre:'Tostada Salmorejo (Media)',desc:'Tamaño media tostada',precio:1.4},
-{id:2,cat:'tostadas',nombre:'Tostada Salmorejo (Entera)',desc:'Tamaño tostada entera',precio:2.3},
-{id:3,cat:'tostadas',nombre:'Tostada York y Queso (Media)',desc:'Tamaño media tostada',precio:2.1},
-{id:4,cat:'tostadas',nombre:'Tostada York y Queso (Entera)',desc:'Tamaño tostada entera',precio:3.9},
-{id:5,cat:'tostadas',nombre:'Tostada York y Queso Curado (Media)',desc:'Tamaño media tostada',precio:2.3},
-{id:6,cat:'tostadas',nombre:'Tostada York y Queso Curado (Entera)',desc:'Tamaño tostada entera',precio:4.1},
-{id:7,cat:'tostadas',nombre:'Tostada Aguacate y Huevo (Media)',desc:'Tamaño media tostada',precio:2.5},
-{id:8,cat:'tostadas',nombre:'Tostada Aguacate y Huevo (Entera)',desc:'Tamaño tostada entera',precio:4.5},
-{id:9,cat:'tostadas',nombre:'Tostada Lacón (Media)',desc:'Tamaño media tostada',precio:3.0},
-{id:10,cat:'tostadas',nombre:'Tostada Lacón (Entera)',desc:'Tamaño tostada entera',precio:5.2},
-{id:11,cat:'cafes',nombre:'Bica',desc:'Café solo estilo portugués',precio:1.2},
-{id:12,cat:'cafes',nombre:'Descafeinado de máquina con leche',desc:'Taza caliente',precio:1.5},
-{id:13,cat:'cafes',nombre:'Café Doble',desc:'Carga doble',precio:2.0},
-{id:14,cat:'bocadillos',nombre:'Bocadillo Bacon y Queso',desc:'Recién hecho',precio:5.0},
-{id:15,cat:'bocadillos',nombre:'Bocadillo Queso Curado',desc:'Pan crujiente',precio:6.0},
-{id:16,cat:'bocadillos',nombre:'Bocadillo Chorizo Ibérico',desc:'Ibérico de bellota',precio:6.0},
-{id:17,cat:'bocadillos',nombre:'Bocadillo Calamares',desc:'Calamares fritos',precio:7.0},
-{id:18,cat:'bocadillos',nombre:'Bocadillo Jamón Ibérico',desc:'Jamón ibérico al corte',precio:10.0},
-{id:19,cat:'raciones',nombre:'Ensalada',desc:'Ración completa',precio:10.0},
-{id:20,cat:'raciones',nombre:'Cazón',desc:'Ración en adobo',precio:11.0},
-{id:21,cat:'cervezas',nombre:'Quinto Amstel',desc:'Botellín 20 cl bien frío',precio:1.5},
-{id:22,cat:'cervezas',nombre:'Quinto Cruzcampo',desc:'Botellín 20 cl bien frío',precio:1.5},
-{id:23,cat:'cervezas',nombre:'Ladrón de Verano',desc:'Sidra refrescante',precio:2.5},
-{id:24,cat:'cervezas',nombre:'Cubeta Sagres',desc:'Cubo con hielo',precio:10.0},
-{id:25,cat:'cervezas',nombre:'Cubeta Amstel',desc:'Cubo con hielo',precio:12.0},
-{id:26,cat:'vinos',nombre:'Barbadillo (Copa)',desc:'Vino blanco',precio:3.0},
-{id:27,cat:'vinos',nombre:'Barbadillo (Botella)',desc:'Botella 75 cl',precio:15.0},
-{id:28,cat:'vinos',nombre:'Beronia (Copa)',desc:'Rioja',precio:3.0},
-{id:29,cat:'vinos',nombre:'Beronia (Botella)',desc:'Botella 75 cl',precio:15.0},
-{id:30,cat:'vinos',nombre:'Palacio Quemado (Copa)',desc:'Tinto de la tierra',precio:3.0},
-{id:31,cat:'vinos',nombre:'Palacio Quemado (Botella)',desc:'Botella 75 cl',precio:15.0},
-{id:32,cat:'vinos',nombre:'Lambrusco (Copa)',desc:'Vino de aguja',precio:3.5},
-{id:33,cat:'vinos',nombre:'Lambrusco (Botella)',desc:'Botella 75 cl',precio:16.0},
-{id:34,cat:'vinos',nombre:'Mía (Copa)',desc:'Vino afrutado',precio:3.5},
-{id:35,cat:'vinos',nombre:'Mía (Botella)',desc:'Botella 75 cl',precio:16.0},
-{id:36,cat:'tragos',nombre:'Punt e Mes / Puntemiño (Chupito)',desc:'Aperitivo vermú',precio:1.5},
-{id:37,cat:'tragos',nombre:'Punt e Mes / Puntemiño (Copa)',desc:'Copa servida',precio:4.5},
-{id:38,cat:'tragos',nombre:'Baileys (Chupito)',desc:'Crema irlandesa',precio:2.0},
-{id:39,cat:'tragos',nombre:'Baileys (Copa)',desc:'Con hielo',precio:4.0},
-{id:40,cat:'tragos',nombre:'Amarguinha (Chupito)',desc:'Licor de almendra amarga',precio:3.5},
-{id:41,cat:'tragos',nombre:'Amarguinha (Copa)',desc:'Con hielo y limón',precio:5.0}
+var WA = "/34614332550";
+var cats = [
+  {id:'tostadas', nom:'Tostadas'},
+  {id:'cafes', nom:'Cafés'},
+  {id:'bocadillos', nom:'Bocadillos'},
+  {id:'raciones', nom:'Raciones'},
+  {id:'cervezas', nom:'Cervezas'},
+  {id:'vinos', nom:'Vinos'},
+  {id:'tragos', nom:'Cubatas y Tragos'}
 ];
-document.getElementById('nav-tabs').innerHTML='<button type="button" class="tab active" onclick="filtrar(\'todos\',this)">Todos</button>'+cats.map(c=>'<button type="button" class="tab" onclick="filtrar(\''+c.id+'\',this)">'+c.nom.split(' ').shift()+'</button>').join('');
-let filtroActual='todos',cantidades={};
-function tarjetaHTML(p){const q=cantidades[p.id]||0,c=q===0?'<button type="button" class="btn-add" onclick="cambiar('+p.id+',1)">+ Añadir</button>':'<div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar('+p.id+',-1)">-</button><span class="qty-num">'+q+'</span><button type="button" class="btn-qty" onclick="cambiar('+p.id+',1)">+</button></div>';return '<div class="card"><div><h3>'+p.nombre+'</h3><p>'+p.desc+'</p><div class="price">'+p.precio.toFixed(2)+' €</div></div>'+c+'</div>'}
-function render(){const cont=document.getElementById('lista');cont.innerHTML=filtroActual==='todos'?cats.map(c=>{const items=menu.filter(p=>p.cat===c.id);return items.length?'<h2 class="cat-title">'+c.nom+'</h2>'+items.map(tarjetaHTML).join(''):''}).join(''):menu.filter(p=>p.cat===filtroActual).map(tarjetaHTML).join('')}
-function filtrar(c,b){filtroActual=c;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');b.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});render();window.scrollTo({top:document.querySelector('header').offsetHeight,behavior:'smooth'})}
-function cambiar(id,d){cantidades[id]=Math.max(0,(cantidades[id]||0)+d);if(cantidades[id]===0)delete cantidades[id];actualizarTotales();render();if(document.getElementById('modal').classList.contains('open'))abrir()}
-function obtenerSeleccion(){return menu.filter(p=>cantidades[p.id]>0).map(p=>({...p,qty:cantidades[p.id]}))}
-function actualizarTotales(){const items=obtenerSeleccion();document.getElementById('cant').innerText=items.reduce((a,b)=>a+b.qty,0);const total=items.reduce((a,b)=>a+b.precio*b.qty,0).toFixed(2);document.getElementById('tot').innerText=total;document.getElementById('m-tot').innerText=total}
-function abrir(){const items=obtenerSeleccion();if(!items.length){cerrar();return}document.getElementById('resumen').innerHTML=items.map(x=>'<div class="item-row"><div><strong>'+x.qty+'x</strong> '+x.nombre+'<br><small style="color:#666">'+(x.precio*x.qty).toFixed(2)+' €</small></div><div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar('+x.id+',-1)">-</button><span class="qty-num">'+x.qty+'</span><button type="button" class="btn-qty" onclick="cambiar('+x.id+',1)">+</button></div></div>').join('');actualizarTotales();document.getElementById('modal').classList.add('open')}
-function vaciar(){cantidades={};actualizarTotales();render();cerrar()}function cerrar(){document.getElementById('modal').classList.remove('open')}
-function enviarWA(){const items=obtenerSeleccion();if(!items.length)return;const notas=document.getElementById('notas').value.trim();let msg='*PEDIDO EL GRAN COMBO*\n'+document.getElementById('tipo').value+': '+(document.getElementById('dato').value||'Sin indicar')+'\n\n'+items.map(x=>'• '+x.qty+'x '+x.nombre+' ('+(x.precio*x.qty).toFixed(2)+' €)').join('\n')+'\n\n*TOTAL: '+document.getElementById('m-tot').innerText+' €*';if(notas)msg+='\n📝 *Notas:* '+notas;window.location.href='https://wa.me}
+var menu = [
+  {id:1, cat:'tostadas', nombre:'Tostada Salmorejo (Media)', desc:'Tamaño media tostada', precio:1.4},
+  {id:2, cat:'tostadas', nombre:'Tostada Salmorejo (Entera)', desc:'Tamaño tostada entera', precio:2.3},
+  {id:3, cat:'tostadas', nombre:'Tostada York y Queso (Media)', desc:'Tamaño media tostada', precio:2.1},
+  {id:4, cat:'tostadas', nombre:'Tostada York y Queso (Entera)', desc:'Tamaño tostada entera', precio:3.9},
+  {id:5, cat:'tostadas', nombre:'Tostada York y Queso Curado (Media)', desc:'Tamaño media tostada', precio:2.3},
+  {id:6, cat:'tostadas', nombre:'Tostada York y Queso Curado (Entera)', desc:'Tamaño tostada entera', precio:4.1},
+  {id:7, cat:'tostadas', nombre:'Tostada Aguacate y Huevo (Media)', desc:'Tamaño media tostada', precio:2.5},
+  {id:8, cat:'tostadas', nombre:'Tostada Aguacate y Huevo (Entera)', desc:'Tamaño tostada entera', precio:4.5},
+  {id:9, cat:'tostadas', nombre:'Tostada Lacón (Media)', desc:'Tamaño media tostada', precio:3.0},
+  {id:10, cat:'tostadas', nombre:'Tostada Lacón (Entera)', desc:'Tamaño tostada entera', precio:5.2},
+  {id:11, cat:'cafes', nombre:'Bica', desc:'Café solo estilo portugués', precio:1.2},
+  {id:12, cat:'cafes', nombre:'Descafeinado de máquina con leche', desc:'Taza caliente', precio:1.5},
+  {id:13, cat:'cafes', nombre:'Café Doble', desc:'Carga doble', precio:2.0},
+  {id:14, cat:'bocadillos', nombre:'Bocadillo Bacon y Queso', desc:'Recién hecho', precio:5.0},
+  {id:15, cat:'bocadillos', nombre:'Bocadillo Queso Curado', desc:'Pan crujiente', precio:6.0},
+  {id:16, cat:'bocadillos', nombre:'Bocadillo Chorizo Ibérico', desc:'Ibérico de bellota', precio:6.0},
+  {id:17, cat:'bocadillos', nombre:'Bocadillo Calamares', desc:'Calamares fritos', precio:7.0},
+  {id:18, cat:'bocadillos', nombre:'Bocadillo Jamón Ibérico', desc:'Jamón ibérico al corte', precio:10.0},
+  {id:19, cat:'raciones', nombre:'Ensalada', desc:'Ración completa', precio:10.0},
+  {id:20, cat:'raciones', nombre:'Cazón', desc:'Ración en adobo', precio:11.0},
+  {id:21, cat:'cervezas', nombre:'Quinto Amstel', desc:'Botellín 20 cl bien frío', precio:1.5},
+  {id:22, cat:'cervezas', nombre:'Quinto Cruzcampo', desc:'Botellín 20 cl bien frío', precio:1.5},
+  {id:23, cat:'cervezas', nombre:'Ladrón de Verano', desc:'Sidra refrescante', precio:2.5},
+  {id:24, cat:'cervezas', nombre:'Cubeta Sagres', desc:'Cubo con hielo', precio:10.0},
+  {id:25, cat:'cervezas', nombre:'Cubeta Amstel', desc:'Cubo con hielo', precio:12.0},
+  {id:26, cat:'vinos', nombre:'Barbadillo (Copa)', desc:'Vino blanco', precio:3.0},
+  {id:27, cat:'vinos', nombre:'Barbadillo (Botella)', desc:'Botella 75 cl', precio:15.0},
+  {id:28, cat:'vinos', nombre:'Beronia (Copa)', desc:'Rioja', precio:3.0},
+  {id:29, cat:'vinos', nombre:'Beronia (Botella)', desc:'Botella 75 cl', precio:15.0},
+  {id:30, cat:'vinos', nombre:'Palacio Quemado (Copa)', desc:'Tinto de la tierra', precio:3.0},
+  {id:31, cat:'vinos', nombre:'Palacio Quemado (Botella)', desc:'Botella 75 cl', precio:15.0},
+  {id:32, cat:'vinos', nombre:'Lambrusco (Copa)', desc:'Vino de aguja', precio:3.5},
+  {id:33, cat:'vinos', nombre:'Lambrusco (Botella)', desc:'Botella 75 cl', precio:16.0},
+  {id:34, cat:'vinos', nombre:'Mía (Copa)', desc:'Vino afrutado', precio:3.5},
+  {id:35, cat:'vinos', nombre:'Mía (Botella)', desc:'Botella 75 cl', precio:16.0},
+  {id:36, cat:'tragos', nombre:'Punt e Mes / Puntemiño (Chupito)', desc:'Aperitivo vermú', precio:1.5},
+  {id:37, cat:'tragos', nombre:'Punt e Mes / Puntemiño (Copa)', desc:'Copa servida', precio:4.5},
+  {id:38, cat:'tragos', nombre:'Baileys (Chupito)', desc:'Crema irlandesa', precio:2.0},
+  {id:39, cat:'tragos', nombre:'Baileys (Copa)', desc:'Con hielo', precio:4.0},
+  {id:40, cat:'tragos', nombre:'Amarguinha (Chupito)', desc:'Licor de almendra amarga', precio:3.5},
+  {id:41, cat:'tragos', nombre:'Amarguinha (Copa)', desc:'Con hielo y limón', precio:5.0}
+];
+var filtroActual = 'todos';
+var cantidades = {};
+
+var tabsHTML = '<button type="button" class="tab active" onclick="filtrar(\'todos\',this)">Todos</button>';
+for (var i = 0; i < cats.length; i++) {
+  tabsHTML += '<button type="button" class="tab" onclick="filtrar(\'' + cats[i].id + '\',this)">' + cats[i].nom + '</button>';
+}
+document.getElementById('nav-tabs').innerHTML = tabsHTML;
+
+function tarjetaHTML(p) {
+  var q = cantidades[p.id] || 0;
+  var btn = q === 0
+    ? '<button type="button" class="btn-add" onclick="cambiar(' + p.id + ',1)">+ Añadir</button>'
+    : '<div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar(' + p.id + ',-1)">-</button><span class="qty-num">' + q + '</span><button type="button" class="btn-qty" onclick="cambiar(' + p.id + ',1)">+</button></div>';
+  return '<div class="card"><div><h3>' + p.nombre + '</h3><p>' + p.desc + '</p><div class="price">' + p.precio.toFixed(2) + ' €</div></div>' + btn + '</div>';
+}
+
+function render() {
+  var html = '';
+  for (var i = 0; i < cats.length; i++) {
+    var c = cats[i];
+    if (filtroActual !== 'todos' && filtroActual !== c.id) continue;
+    var itemsHTML = '';
+    for (var j = 0; j < menu.length; j++) {
+      if (menu[j].cat === c.id) itemsHTML += tarjetaHTML(menu[j]);
+    }
+    if (itemsHTML !== '') {
+      if (filtroActual === 'todos') html += '<h2 class="cat-title">' + c.nom + '</h2>';
+      html += itemsHTML;
+    }
+  }
+  document.getElementById('lista').innerHTML = html;
+}
+
+function filtrar(c, b) {
+  filtroActual = c;
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  b.classList.add('active');
+  render();
+}
+
+function cambiar(id, d) {
+  var nueva = (cantidades[id] || 0) + d;
+  if (nueva <= 0) delete cantidades[id];
+  else cantidades[id] = nueva;
+  actualizarTotales();
+  render();
+  if (document.getElementById('modal').classList.contains('open')) abrir();
+}
+
+function actualizarTotales() {
+  var totalCant = 0;
+  var totalPrecio = 0;
+  for (var i = 0; i < menu.length; i++) {
+    var q = cantidades[menu[i].id] || 0;
+    if (q > 0) {
+      totalCant += q;
+      totalPrecio += menu[i].precio * q;
+    }
+  }
+  document.getElementById('cant').innerText = totalCant;
+  document.getElementById('tot').innerText = totalPrecio.toFixed(2);
+  document.getElementById('m-tot').innerText = totalPrecio.toFixed(2);
+}
+
+function abrir() {
+  var html = '';
+  for (var i = 0; i < menu.length; i++) {
+    var p = menu[i];
+    var q = cantidades[p.id] || 0;
+    if (q > 0) {
+      html += '<div class="item-row"><div><strong>' + q + 'x</strong> ' + p.nombre + '<br><small style="color:#666">' + (p.precio * q).toFixed(2) + ' €</small></div><div class="qty-box"><button type="button" class="btn-qty" onclick="cambiar(' + p.id + ',-1)">-</button><span class="qty-num">' + q + '</span><button type="button" class="btn-qty" onclick="cambiar(' + p.id + ',1)">+</button></div></div>';
+    }
+  }
+  if (html === '') { cerrar(); return; }
+  document.getElementById('resumen').innerHTML = html;
+  actualizarTotales();
+  document.getElementById('modal').classList.add('open');
+}
+
+function vaciar() { cantidades = {}; actualizarTotales(); render(); cerrar(); }
+function cerrar() { document.getElementById('modal').classList.remove('open'); }
+
+function enviarWA() {
+  var tipo = document.getElementById('tipo').value;
+  var dato = document.getElementById('dato').value || 'Sin indicar';
+  var notas = document.getElementById('notas').value.trim();
+  var lineas = [];
+  for (var i = 0; i < menu.length; i++) {
+    var p = menu[i];
+    var q = cantidades[p.id] || 0;
+    if (q > 0) lineas.push('• ' + q + 'x ' + p.nombre + ' (' + (p.precio * q).toFixed(2) + ' €)');
+  }
+  if (!lineas.length) return;
+  var msg = '*PEDIDO EL GRAN COMBO*\n' + tipo + ': ' + dato + '\n\n' + lineas.join('\n') + '\n\n*TOTAL: ' + document.getElementById('m-tot').innerText + ' €*';
+  if (notas) msg += '\n📝 *Notas:* ' + notas;
+  window.location.href = 'https://wa.me' + WA + '?text=' + encodeURIComponent(msg);
+}
+
 render();
-</script></body></html>
+</script>
+</body>
+</html>
