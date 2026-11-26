@@ -106,6 +106,7 @@ let db = JSON.parse(localStorage.getItem('tpro')) || {
   ts:[{id:1,name:'Tanda Ejemplo',amt:50,freq:'Mensual',ms:['Ana','Carlos','Lucía','Miguel'],r:0,pay:{'0_0':1}}]
 };
 let curId=null, draft=[];
+const waUrl = 'https:/' + '/wa.me/?text=';
 const save=()=>localStorage.setItem('tpro',JSON.stringify(db));
 const theme=()=>{
   document.documentElement.style.setProperty('--p',db.cfg.col);
@@ -163,12 +164,12 @@ function delT(){if(confirm('¿Eliminar tanda?')){db.ts=db.ts.filter(x=>x.id!==cu
 function waAll(){
   let t=db.ts.find(x=>x.id===curId),c=db.cfg.cur;
   let txt=`*${t.name}*\nRonda ${t.r+1}/${t.ms.length}\n👑 Cobra: *${t.ms[t.r]}* (${t.amt*t.ms.length}${c})\n\n`+t.ms.map((m,i)=>`${t.pay[t.r+'_'+i]?'✅':'⏳'} ${m}`).join('\n');
-  window.open('https://wa.me);
+  window.open(waUrl+encodeURIComponent(txt));
 }
 function waOne(i,p){
   let t=db.ts.find(x=>x.id===curId),c=db.cfg.cur;
   let txt=p?`✅ Hola *${t.ms[i]}*, recibido tu aporte de *${t.amt}${c}* (Ronda ${t.r+1} - ${t.name}).`:`👋 Hola *${t.ms[i]}*, te recuerdo tu aporte de *${t.amt}${c}* para la Ronda ${t.r+1} de *${t.name}*.`;
-  window.open('https://wa.me);
+  window.open(waUrl+encodeURIComponent(txt));
 }
 function saveCfg(){db.cfg={name:cName.value||'💰 Tandas PRO',cur:cCur.value||'€',col:cCol.value};save();theme();go('vList');}
 theme();rList();
