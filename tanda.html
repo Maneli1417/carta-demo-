@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tanda - Ahorro Grupal</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; }
+        .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--border); }
+        h1, h2, h3 { margin-top: 0; }
+        h1 { font-size: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 4px; color: var(--muted); }
+        input, select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+        .row { display: flex; gap: 10px; }
+        .row > * { flex: 1; }
+        button { background: var(--primary); color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: 0.2s; }
+        button:hover { background: var(--primary-hover); }
+        button.secondary { background: #e2e8f0; color: var(--text); }
+        button.secondary:hover { background: #cbd5e1; }
+        button.danger { background: #fee2e2; color: #dc2626; }
+        button.danger:hover { background: #fecaca; }
+        .badge { background: #dbeafe; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+        .participant-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); }
+        .participant-item:last-child { border-bottom: none; }
+        .turn-number { background: var(--text); color: white; width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; }
+        .winner-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center; }
+        .winner-name { font-size: 1.3rem; font-weight: 800; color: var(--success); margin: 5px 0; }
+        .progress-bar { background: var(--border); height: 10px; border-radius: 5px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { background: var(--success); height: 100%; transition: width 0.3s; }
+        .pay-btn { padding: 6px 12px; font-size: 0.85rem; }
+        .pay-btn.paid { background: var(--success); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>💰 Gestor de Tanda <button class="danger" onclick="resetApp()" style="font-size: 0.75rem; padding: 6px 10px;">Reiniciar</button></h1>
+
+    <!-- VISTA 1: CONFIGURACIÓN -->
+    <div id="setupView" class="card">
+        <h2>1. Configura tu Tanda</h2>
+        <div class="form-group">
+            <label>Nombre del grupo</label>
+            <input type="text" id="tandaName" placeholder="Ej. Tanda Oficina 2026" value="Ahorro Amigos">
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label>Aporte por turno (€ / $)</label>
+                <input type="number" id="amount" value="50" min="1">
+            </div>
+            <div class="form-group">
+                <label>Frecuencia</label>
+                <select id="frequency">
+                    <option value="Semanal">Semanal</option>
+                    <option value="Quincenal">Quincenal</option>
+                    <option value="Mensual" selected>Mensual</option>
+                </select>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+
+        <h3>2. Participantes (<span id="count">0</span>)</h3>
+        <div class="row" style="margin-bottom: 15px;">
+            <input type="text" id="newMember" placeholder="Nombre del participante..." onkeypress="if(event.key==='Enter') addMember()">
+            <button onclick="addMember()" style="flex: 0 0 auto;">+ Añadir</button>
+        </div>
+
+        <div id="setupList"></div>
+
+        <div class="row" style="margin-top: 20px;">
+            <button class="secondary" onclick="shuffleMembers()">🎲 Sortear Turnos</button>
+            <button onclick="startTanda()">🚀 Iniciar Tanda</button>
+        </div>
+    </div>
+
+    <!-- VISTA 2: TANDA ACTIVA -->
+    <div id="activeView" class="card hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div>
+                <h2 id="displayTitle" style="margin:0;">Nombre Tanda</h2>
+                <small style="color: var(--muted);" id="displaySubtitle">Aporte: 50€ • Mensual</small>
+            </div>
+            <span class="badge" id="roundBadge">Ronda 1 de 5</span>
+        </div>
+
+        <div class="winner-box">
+            <div style="font-size: 0.85rem; color: var(--muted);">LE TOCA COBRAR EN ESTA RONDA A:</div>
+            <div class="winner-name" id="currentWinner">Nombre</div>
+            <div style="font-size: 0.9rem; font-weight: 600;">Bote total: <span id="totalPot">0</span></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+            <span>Recaudado en esta ronda:</span>
+            <span id="collectedText">0 / 0</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
+
+        <h3>Estado de pagos (Ronda <span id="roundNum">1</span>)</h3>
+        <div id="activeList"></div>
+
+        <div class="row" style="margin-top: 20px;">
+            <button class="secondary" onclick="prevRound()" id="btnPrev">← Anterior</button>
+            <button onclick="nextRound()" id="btnNext">Siguiente Ronda →</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let state = JSON.parse(localStorage.getItem('tandaData')) || {
+        started: false,
+        name: 'Ahorro Amigos',
+        amount: 50,
+        frequency: 'Mensual',
+        members: ['Ana', 'Carlos', 'Lucía', 'Miguel'],
+        currentRound: 0,
+        payments: {} // formato: "ronda_indiceMiembro": true
+    };
+
+    function save() {
+        localStorage.setItem('tandaData', JSON.stringify(state));
+        render();
+    }
+
+    function addMember() {
+        const input = document.getElementById('newMember');
+        const name = input.value.trim();
+        if (name) {
+            state.members.push(name);
+            input.value = '';
+            save();
+        }
+    }
+
+    function removeMember(index) {
+        state.members.splice(index, 1);
+        save();
+    }
+
+    function shuffleMembers() {
+        for (let i = state.members.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [state.members[i], state.members[j]] = [state.members[j], state.members[i]];
+        }
+        save();
+    }
+
+    function startTanda() {
+        if (state.members.length < 2) {
+            alert('Añade al menos 2 participantes para iniciar la tanda.');
+            return;
+        }
+        state.name = document.getElementById('tandaName').value || 'Mi Tanda';
+        state.amount = parseFloat(document.getElementById('amount').value) || 50;
+        state.frequency = document.getElementById('frequency').value;
+        state.started = true;
+        state.currentRound = 0;
+        save();
+    }
+
+    function togglePayment(memberIndex) {
+        const key = `${state.currentRound}_${memberIndex}`;
+        state.payments[key] = !state.payments[key];
+        save();
+    }
+
+    function nextRound() {
+        if (state.currentRound < state.members.length - 1) {
+            state.currentRound++;
+            save();
+        } else {
+            alert('🎉 ¡Felicidades! Se han completado todas las rondas de la tanda.');
+        }
+    }
+
+    function prevRound() {
+        if (state.currentRound > 0) {
+            state.currentRound--;
+            save();
+        }
+    }
+
+    function resetApp() {
+        if (confirm('¿Seguro que quieres borrar todos los datos y crear una tanda nueva?')) {
+            localStorage.removeItem('tandaData');
+            location.reload();
+        }
+    }
+
+    function render() {
+        document.getElementById('setupView').classList.toggle('hidden', state.started);
+        document.getElementById('activeView').classList.toggle('hidden', !state.started);
+
+        if (!state.started) {
+            document.getElementById('count').innerText = state.members.length;
+            const list = document.getElementById('setupList');
+            list.innerHTML = state.members.map((m, i) => `
+                <div class="participant-item">
+                    <div><span class="turn-number">${i + 1}</span> <strong>${m}</strong></div>
+                    <button class="danger" style="padding: 4px 8px; font-size: 0.8rem;" onclick="removeMember(${i})">✕</button>
+                </div>
+            `).join('');
+        } else {
+            const totalMembers = state.members.length;
+            const pot = state.amount * totalMembers;
+            document.getElementById('displayTitle').innerText = state.name;
+            document.getElementById('displaySubtitle').innerText = `Aporte: ${state.amount} • ${state.frequency}`;
+            document.getElementById('roundBadge').innerText = `Ronda ${state.currentRound + 1} de ${totalMembers}`;
